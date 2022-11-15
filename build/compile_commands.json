@@ -1,0 +1,37 @@
+[
+{
+  "directory": "C:/Dev/Breakout/build",
+  "command": "C:\\mingw\\bin\\g++.exe -D_CRT_SECURE_NO_WARNINGS @CMakeFiles/STB_IMAGE.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\STB_IMAGE.dir\\lib\\stb_image.cpp.obj -c C:\\Dev\\Breakout\\lib\\stb_image.cpp",
+  "file": "C:/Dev/Breakout/lib/stb_image.cpp"
+},
+{
+  "directory": "C:/Dev/Breakout/build",
+  "command": "C:\\mingw\\bin\\gcc.exe -D_CRT_SECURE_NO_WARNINGS @CMakeFiles/GLAD.dir/includes_C.rsp -g -o CMakeFiles\\GLAD.dir\\lib\\glad.c.obj -c C:\\Dev\\Breakout\\lib\\glad.c",
+  "file": "C:/Dev/Breakout/lib/glad.c"
+},
+{
+  "directory": "C:/Dev/Breakout/build",
+  "command": "C:\\mingw\\bin\\g++.exe -D_CRT_SECURE_NO_WARNINGS @CMakeFiles/Breakout.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\Breakout.dir\\src\\game.cpp.obj -c C:\\Dev\\Breakout\\src\\game.cpp",
+  "file": "C:/Dev/Breakout/src/game.cpp"
+},
+{
+  "directory": "C:/Dev/Breakout/build",
+  "command": "C:\\mingw\\bin\\g++.exe -D_CRT_SECURE_NO_WARNINGS @CMakeFiles/Breakout.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\Breakout.dir\\src\\main.cpp.obj -c C:\\Dev\\Breakout\\src\\main.cpp",
+  "file": "C:/Dev/Breakout/src/main.cpp"
+},
+{
+  "directory": "C:/Dev/Breakout/build",
+  "command": "C:\\mingw\\bin\\g++.exe -D_CRT_SECURE_NO_WARNINGS @CMakeFiles/Breakout.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\Breakout.dir\\src\\resource_manager.cpp.obj -c C:\\Dev\\Breakout\\src\\resource_manager.cpp",
+  "file": "C:/Dev/Breakout/src/resource_manager.cpp"
+},
+{
+  "directory": "C:/Dev/Breakout/build",
+  "command": "C:\\mingw\\bin\\g++.exe -D_CRT_SECURE_NO_WARNINGS @CMakeFiles/Breakout.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\Breakout.dir\\src\\shader.cpp.obj -c C:\\Dev\\Breakout\\src\\shader.cpp",
+  "file": "C:/Dev/Breakout/src/shader.cpp"
+},
+{
+  "directory": "C:/Dev/Breakout/build",
+  "command": "C:\\mingw\\bin\\g++.exe -D_CRT_SECURE_NO_WARNINGS @CMakeFiles/Breakout.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\Breakout.dir\\src\\texture.cpp.obj -c C:\\Dev\\Breakout\\src\\texture.cpp",
+  "file": "C:/Dev/Breakout/src/texture.cpp"
+}
+]
