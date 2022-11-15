@@ -50,13 +50,13 @@ int main( int agrc, char*argv[])
     Breakout.Init();
 
     //deltaTime variables ( because of the object in movement, we need to take care about the time)
-    float deltaTime = 0.0f;
-    float lastFrame = 0.0f;
+    double deltaTime = 0.0f;
+    double lastFrame = 0.0f;
 
     while(!glfwWindowShouldClose(window))
     {
         // Calculate deltaTime
-        float currentFrame = glfwGetTime();
+        double currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         glfwPollEvents(); // take the inputs of keyboard and mouse

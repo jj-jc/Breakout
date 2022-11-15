@@ -26,8 +26,8 @@ class Game
         ~Game();
         // Functionalities
         void Init();// Initialize game state (load all resources: Shaders/textures/levels)
-        void ProcessInput(float dt); // Process input as stored within _keys parameter
-        void Update(float dt); // Update all game events: player/ball movements
+        void ProcessInput(double dt); // Process input as stored within _keys parameter
+        void Update(double dt); // Update all game events: player/ball movements
         void Render(); // Render the game Frame
 };
 #endif

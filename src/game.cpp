@@ -19,12 +19,12 @@ void Game::Init()
     
 }
 // Process input as stored within _keys parameter
-void Game::ProcessInput(float dt)
+void Game::ProcessInput(double dt)
 {
 
 } 
 // Update all game events: player/ball movements
-void Game::Update(float dt)
+void Game::Update(double dt)
 {
 
 }
