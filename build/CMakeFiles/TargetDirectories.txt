@@ -1,5 +1,0 @@
-C:/Dev/Breakout/build/CMakeFiles/STB_IMAGE.dir
-C:/Dev/Breakout/build/CMakeFiles/GLAD.dir
-C:/Dev/Breakout/build/CMakeFiles/Breakout.dir
-C:/Dev/Breakout/build/CMakeFiles/ALL_BUILD.dir
-C:/Dev/Breakout/build/CMakeFiles/ZERO_CHECK.dir
