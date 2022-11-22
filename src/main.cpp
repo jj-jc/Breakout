@@ -92,9 +92,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if(key >= 0 && key < 1024)
     {
         if(action == GLFW_PRESS)
-            Breakout._keys[key] = true;
+            Breakout.Keys[key] = true;
         else if(action == GLFW_RELEASE)
-            Breakout._keys[key] = false;
+            Breakout.Keys[key] = false;
     }
 }
 

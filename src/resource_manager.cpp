@@ -11,24 +11,24 @@ ResourceManager ResourceManager::s_Instance;
 std::map<std::string, Shader> ResourceManager::_shaders_map;
 std::map<std::string, Texture2D> ResourceManager::_textures2D_map;
 
-Shader ResourceManager::LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, std::string name)
+Shader &ResourceManager::LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, std::string name)
 {
     _shaders_map[name] = loadShaderFromFile(vShaderFile, fShaderFile, gShaderFile);
     return _shaders_map[name];
 }
 
-Texture2D ResourceManager::LoadTexture2D(const char* file, bool alpha, std::string name)
+Texture2D &ResourceManager::LoadTexture2D(const char* file, bool alpha, std::string name)
 {
     _textures2D_map[name] = loadTexture2D(file, alpha);
     return _textures2D_map[name];
 }
 
-Shader ResourceManager::GetShader(std::string name)
+Shader &ResourceManager::GetShader(std::string name)
 {
     return _shaders_map[name];
 }
 
-Texture2D ResourceManager::GetTexture2D(std::string name)
+Texture2D &ResourceManager::GetTexture2D(std::string name)
 {
     return _textures2D_map[name];
 }
