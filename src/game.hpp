@@ -21,17 +21,18 @@ enum GameState
 class Game
 {
     public:
-        // Game state
         GameState State;
         bool Keys[1024];
         unsigned int Width, Height;
-        // Game Levels
         std::vector<GameLevel> Levels;
         unsigned int Current_level;
+        
+        // Game functionalities
+        void DoCollisions();
         // Constructor/Destructor
         Game(unsigned int width, unsigned int height);
         ~Game();
-        // Functionalities
+        // Flow functionalities 
         void Init();// Initialize game state (load all resources: Shaders/textures/levels)
         void ProcessInput(double dt); // Process input as stored within keys parameter
         void Update(double dt); // Update all game events: player/ball movements

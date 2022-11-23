@@ -13,8 +13,8 @@
 class GameLevel
 {
     public:
-        // Level state
-        std::vector<GameObject> Bricks;
+        std::vector<GameObject> Bricks; // Bricks for every level
+
         // Conestructor
         GameLevel() {}
         // Loads level from file

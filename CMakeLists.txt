@@ -6,6 +6,7 @@ project(Breakout)
 set(CMAKE_CXX_STANDARD 17) # this does nothing for MSVC, use target_compile_options below
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # this generate a compilation database
 
 IF(NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build (Debug or Release)" FORCE)

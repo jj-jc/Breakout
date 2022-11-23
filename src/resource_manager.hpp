@@ -15,6 +15,7 @@ class ResourceManager
         // resources storage
         static std::map<std::string, Shader> _shaders_map;
         static std::map<std::string, Texture2D> _textures2D_map;
+        
         // Singleton functions
         ResourceManager(const ResourceManager&) = delete; // avoids the copy constructor
         static ResourceManager& get() { return s_Instance;} // returns the only reference to a ResourceManager

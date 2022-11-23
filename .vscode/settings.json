@@ -61,5 +61,17 @@
         "xtr1common": "cpp",
         "xtree": "cpp",
         "xutility": "cpp"
-    }
+    },
+
+    "makefile.configurations": [
+        {
+            "name": "MyConfiguration",
+            "problemMatchers": [
+                "$gcc"
+            ],
+            "makeArgs": ["any", "other", "args", "you", "want"]
+        },
+    ],
+    "makefile.compileCommandsPath": ".vscode/compile_commands.json",
+    "sonarlint.pathToCompileCommands": ".vscode/compile_commands.json"
 }
