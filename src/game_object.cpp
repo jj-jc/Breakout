@@ -17,3 +17,8 @@ void GameObject::Draw(SpriteRenderer &renderer)
 {
     renderer.DrawSprite(this->Sprite, this->Position, this->Size, this->Rotation, this->Color);
 }
+
+void GameObject::SetPosition(glm::vec2 Position)
+{
+    this->Position = Position;
+}

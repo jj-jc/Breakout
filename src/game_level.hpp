@@ -23,6 +23,7 @@ class GameLevel
         void Draw(SpriteRenderer &renderer);
         // Check if the level is completed (all non-solid bricks are destoyed)
         bool IsCompleted();
+        void Reset();
     private:
         // Initialize level from bricks data. levelWidth and Leveheight are from the enterily world 
         void init(std::vector<std::vector<unsigned int>> tileData, unsigned int levelWidth, unsigned int levelHeight);

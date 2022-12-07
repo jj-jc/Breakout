@@ -32,6 +32,29 @@ void GameLevel::Load(const char* file, unsigned int levelWidth, unsigned int lev
     }
 }
 
+void GameLevel::Draw(SpriteRenderer &renderer)
+{
+    for(GameObject &tile : this->Bricks)
+    {
+        if(!tile.Destroyed)
+            tile.Draw(renderer);
+    }
+}
+
+bool GameLevel::IsCompleted()
+{
+    for(GameObject &tile : this->Bricks)
+        if(!tile.Solid && !tile.Destroyed)
+            return false;
+    return true;
+}
+
+void GameLevel::Reset()
+{
+    for(GameObject &tile: this->Bricks)
+        tile.Destroyed = false;
+}
+
 void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned int levelWidth, unsigned int levelHeight)
 {
     // Calculate dimensions for every brick ( everyone is the same dimension)
@@ -84,19 +107,3 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
     }
 }
 
-void GameLevel::Draw(SpriteRenderer &renderer)
-{
-    for(GameObject &tile : this->Bricks)
-    {
-        if(!tile.Destroyed)
-            tile.Draw(renderer);
-    }
-}
-
-bool GameLevel::IsCompleted()
-{
-    for(GameObject &tile : this->Bricks)
-        if(!tile.Solid && !tile.Destroyed)
-            return false;
-    return true;
-}

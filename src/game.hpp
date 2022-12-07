@@ -16,6 +16,16 @@ enum GameState
     GAME_MENU,
     GAME_WIN
 };
+// Axis direction to calculate the ball direction
+enum Direction
+{
+    UP,
+    RIGHT,
+    DOWN,
+    LEFT
+};
+// Information after collision
+typedef std::tuple<bool, Direction, glm::vec2> Collision;
 
 // Host class that will controls the game
 class Game
@@ -29,6 +39,8 @@ class Game
         
         // Game functionalities
         void DoCollisions();
+        void ResetLevel();
+        void ResetPaddle();
         // Constructor/Destructor
         Game(unsigned int width, unsigned int height);
         ~Game();
