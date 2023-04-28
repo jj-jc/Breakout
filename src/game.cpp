@@ -4,35 +4,34 @@
 #include "ball_object.hpp"
 
 // Game-related State data
-SpriteRenderer* Renderer;
+SpriteRenderer *Renderer;
 
 // Paddle Object
-GameObject* Paddle;
+GameObject *Paddle;
 const glm::vec2 PADDLE_SIZE(100.0f, 20.f);
 const float PADDLE_VELOCITY(500.0f);
 
 // Ball Object
-BallObject* Ball;
+BallObject *Ball;
 const float BALL_RADIUS(12.5f);
 const glm::vec2 INITIAL_BALL_VELOCITY(100.0f, -350.f);
 
 // Function declarations
-bool checkCollision(GameObject& one, GameObject& two);
-Collision checkCollision(BallObject& one, GameObject& two);
+bool checkCollision(GameObject &one, GameObject &two);
+Collision checkCollision(BallObject &one, GameObject &two);
 Direction VectorDirection(glm::vec2 target);
-
 
 // Constructor/Destructor
 Game::Game(unsigned int width, unsigned int height)
     : State(GAME_ACTIVE), Keys(), Width(width), Height(height)
 {
-
 }
 
 Game::~Game()
 {
     delete Renderer; // TODO: call to the destructor to correctly free the data
     delete Paddle;
+    delete Ball;
 }
 
 // Functionalities
@@ -43,10 +42,10 @@ void Game::Init()
     ResourceManager::LoadShader("src/sprite.vs", "src/sprite.fs", nullptr, "sprite");
     // Configure shaders
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(this->Width),
-        static_cast<float>(this->Height), 0.0f, -1.0f, 1.0f);
+                                      static_cast<float>(this->Height), 0.0f, -1.0f, 1.0f);
     // ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
-    ResourceManager::GetShader("sprite").Use().SetMatrix4("projection", 
-        projection);
+    ResourceManager::GetShader("sprite").Use().SetMatrix4("projection",
+                                                          projection);
     // Set render-specific controls
     Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
     // Load textures
@@ -63,12 +62,12 @@ void Game::Init()
     two.Load("resource/levels/two.lvl", Width, Height / 2);
     Levels.push_back(two);
     GameLevel three;
-    three.Load("resources/levels/three.lvl", Width, Height /2);
+    three.Load("resources/levels/three.lvl", Width, Height / 2);
     Levels.push_back(three);
     GameLevel four;
     four.Load("resources/levels/four.lvl", Width, Height / 2);
     Levels.push_back(four);
-    Current_level = 0;
+    Current_level = 0; // init the curren level to level 1
     // Configure paddle Object
     glm::vec2 paddlePos = glm::vec2(Width / 2.0f - PADDLE_SIZE.x / 2.0f, Height - PADDLE_SIZE.y);
     Paddle = new GameObject(paddlePos, PADDLE_SIZE, ResourceManager::GetTexture2D("paddle"));
@@ -80,34 +79,34 @@ void Game::Init()
 // Process input as stored within Keys parameter
 void Game::ProcessInput(double dt)
 {
-    if(State == GAME_ACTIVE)
+    if (State == GAME_ACTIVE)
     {
         float velocity = PADDLE_VELOCITY * dt;
         // Move playerboard
-        if(Keys[GLFW_KEY_A])
+        if (Keys[GLFW_KEY_A])
         {
-            if(Paddle->Position.x >= 0.0f)
+            if (Paddle->Position.x >= 0.0f)
                 Paddle->Position.x -= velocity;
         }
-        if(Keys[GLFW_KEY_D])
+        if (Keys[GLFW_KEY_D])
         {
-            if(Paddle->Position.x <= Width - Paddle->Size.x)
+            if (Paddle->Position.x <= Width - Paddle->Size.x)
                 Paddle->Position.x += velocity;
         }
-        if(Keys[GLFW_KEY_SPACE])
+        if (Keys[GLFW_KEY_SPACE])
             Ball->Stuck = false;
-        // if(Keys[GLFW_KEY_R])
-            // Ball->Reset();
+        if (Keys[GLFW_KEY_R])
+            Ball->Reset();
     }
-} 
+}
 
 // Update all game events: player/ball movements
 void Game::Update(double dt)
 {
     Ball->Move(dt, this->Width);
     this->DoCollisions();
-    
-    if(Ball->Position.y >= Height) // The ball reachs bottom edge
+
+    if (Ball->Position.y >= Height) // The ball reachs bottom edge
     {
         ResetLevel();
         ResetPaddle();
@@ -117,7 +116,7 @@ void Game::Update(double dt)
 // Render the game Frame
 void Game::Render()
 {
-    if(State == GAME_ACTIVE)
+    if (State == GAME_ACTIVE)
     {
         // Draw background
         Renderer->DrawSprite(ResourceManager::GetTexture2D("background"), glm::vec2(0.0f, 0.0f), glm::vec2(Width, Height), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -132,25 +131,25 @@ void Game::Render()
 
 void Game::DoCollisions()
 {
-    for(GameObject& box : Levels[Current_level].Bricks)
+    for (GameObject &box : Levels[Current_level].Bricks)
     {
-        if(!box.Destroyed)
+        if (!box.Destroyed)
         {
             Collision collision = checkCollision(*Ball, box);
-            if(std::get<0>(collision))
+            if (std::get<0>(collision))
             {
                 // destroy block is not solid
-                if(!box.Solid)
+                if (!box.Solid)
                     box.Destroyed = true;
                 // collision resolution
                 Direction dir = std::get<1>(collision);
                 glm::vec2 diff_vector = std::get<2>(collision);
-                if(dir == LEFT || dir == RIGHT) // horizontal collision
+                if (dir == LEFT || dir == RIGHT) // horizontal collision
                 {
-                    Ball->Velocity.x = -Ball->Velocity.x; // reverse 
+                    Ball->Velocity.x = -Ball->Velocity.x; // reverse
                     // relocate
                     float penetration = Ball->Radius - std::abs(diff_vector.x);
-                    if(dir == LEFT)
+                    if (dir == LEFT)
                         Ball->Position.x += penetration; // move right
                     else
                         Ball->Position.x -= penetration; // move left
@@ -159,9 +158,9 @@ void Game::DoCollisions()
                 {
                     Ball->Velocity.y = -Ball->Velocity.y;
                     float penetration = Ball->Radius - std::abs(diff_vector.y);
-                    if(dir == UP)
+                    if (dir == UP)
                         Ball->Position.y -= penetration;
-                    if(dir == DOWN)
+                    if (dir == DOWN)
                         Ball->Position.y += penetration;
                 }
             }
@@ -169,7 +168,7 @@ void Game::DoCollisions()
     }
 
     Collision result = checkCollision(*Ball, *Paddle);
-    if(!Ball->Stuck && std::get<0>(result))
+    if (!Ball->Stuck && std::get<0>(result))
     {
         float centerBoard = Paddle->Position.x + Paddle->Size.x / 2.0f;
         float distance = (Ball->Position.x + Ball->Radius) - centerBoard;
@@ -198,11 +197,10 @@ void Game::ResetPaddle()
     Ball->Stuck = true;
 }
 
-
 // Checking for an AABB collision
 bool checkCollision(GameObject &one, GameObject &two)
-{   
-    // Overlaps in X axis 
+{
+    // Overlaps in X axis
     bool collisionX = (one.Position.x + one.Size.x) >= (two.Position.x) && (two.Position.x + two.Size.x) >= (one.Position.x);
     // Overlaps in Y in axis
     bool collisionY = (one.Position.y + one.Size.y) >= (two.Position.y) && (two.Position.y + two.Size.y) >= (one.Position.y);
@@ -210,7 +208,7 @@ bool checkCollision(GameObject &one, GameObject &two)
     return collisionX && collisionY;
 }
 
-Collision checkCollision(BallObject& one, GameObject& two) // AABB -Circle
+Collision checkCollision(BallObject &one, GameObject &two) // AABB -Circle
 {
     // get center point circle first
     glm::vec2 circle_center(one.Position + one.Radius);
@@ -223,7 +221,7 @@ Collision checkCollision(BallObject& one, GameObject& two) // AABB -Circle
     // add clamped value to aabb_center and get the value closest to circle
     glm::vec2 closest = aabb_center + clamped;
     difference = closest - circle_center;
-    if(glm::length(difference) < one.Radius)
+    if (glm::length(difference) < one.Radius)
         return std::make_tuple(true, VectorDirection(difference), difference);
     else
         return std::make_tuple(false, UP, glm::vec2(0.0f, 0.0f));
@@ -231,24 +229,23 @@ Collision checkCollision(BallObject& one, GameObject& two) // AABB -Circle
 
 Direction VectorDirection(glm::vec2 target)
 {
-    glm::vec2 compass[] = 
-    {
-        glm::vec2(0.0f, 1.0f), // up
-        glm::vec2(1.0f, 0.0f), // rigth //TODO: 
-        glm::vec2(0.0f, -1.0f), // down
-        glm::vec2(-1.0f, 0.0f), // left
-    };
+    glm::vec2 compass[] =
+        {
+            glm::vec2(0.0f, 1.0f),  // up
+            glm::vec2(1.0f, 0.0f),  // rigth
+            glm::vec2(0.0f, -1.0f), // down
+            glm::vec2(-1.0f, 0.0f), // left
+        };
     float max = 0.0f;
     unsigned int best_match = -1;
     for (unsigned int i = 0; i < 4; i++)
     {
         float dot_product = glm::dot(glm::normalize(target), compass[i]);
-        if(dot_product > max)
+        if (dot_product > max)
         {
             max = dot_product;
             best_match = i;
         }
     }
-        return (Direction)best_match;
+    return (Direction)best_match;
 }
-

@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 
-void GameLevel::Load(const char* file, unsigned int levelWidth, unsigned int levelHeight)
+void GameLevel::Load(const char *file, unsigned int levelWidth, unsigned int levelHeight)
 {
     // A number of 0: no brick.
     // A number of 1: a solid brick,
@@ -17,41 +17,41 @@ void GameLevel::Load(const char* file, unsigned int levelWidth, unsigned int lev
     std::string line;
     std::ifstream fstream(file);
     std::vector<std::vector<unsigned int>> tileData;
-    if(fstream)
+    if (fstream)
     {
-        while(std::getline(fstream, line)) // read each line from level file
+        while (std::getline(fstream, line)) // read each line from level file
         {
             std::istringstream sstream(line);
             std::vector<unsigned int> row;
-            while(sstream >> tileCode) // read each word separated by spaces
+            while (sstream >> tileCode) // read each word separated by spaces
                 row.push_back(tileCode);
             tileData.push_back(row);
         }
-        if(tileData.size() > 0)
+        if (tileData.size() > 0)
             this->init(tileData, levelWidth, levelHeight);
     }
 }
 
 void GameLevel::Draw(SpriteRenderer &renderer)
 {
-    for(GameObject &tile : this->Bricks)
+    for (GameObject &tile : this->Bricks)
     {
-        if(!tile.Destroyed)
+        if (!tile.Destroyed)
             tile.Draw(renderer);
     }
 }
 
 bool GameLevel::IsCompleted()
 {
-    for(GameObject &tile : this->Bricks)
-        if(!tile.Solid && !tile.Destroyed)
+    for (GameObject &tile : this->Bricks)
+        if (!tile.Solid && !tile.Destroyed)
             return false;
     return true;
 }
 
 void GameLevel::Reset()
 {
-    for(GameObject &tile: this->Bricks)
+    for (GameObject &tile : this->Bricks)
         tile.Destroyed = false;
 }
 
@@ -62,24 +62,24 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
     unsigned int width = static_cast<unsigned int>(tileData[0].size());
     float unit_width = levelWidth / static_cast<float>(width);
     float unit_height = levelHeight / static_cast<float>(height);
-    //TODO: change doble loop to a simple one
+    // TODO: change doble loop to a simple one
     unsigned int brick_value = 0;
     glm::vec3 color = glm::vec3(1.0f);
-    for(unsigned int y = 0; y < height; ++y)
+    for (unsigned int y = 0; y < height; ++y)
     {
-        for(unsigned int x = 0; x < width; ++x)
+        for (unsigned int x = 0; x < width; ++x)
         {
-            // Check block type from level data. 
+            // Check block type from level data.
             brick_value = tileData[y][x];
-            if(brick_value == 1) // Solid
+            if (brick_value == 1) // Solid
             {
                 glm::vec2 pos(unit_width * x, unit_height * y);
                 glm::vec2 size(unit_width, unit_height);
                 GameObject brick(pos, size, ResourceManager::GetTexture2D("block_solid"), glm::vec3(0.8f, 0.8f, 0.7f));
                 brick.Solid = true;
-                Bricks.push_back(brick);
+                this->Bricks.push_back(brick);
             }
-            else if(brick_value > 1)
+            else if (brick_value > 1)
             {
                 switch (brick_value)
                 {
@@ -94,16 +94,15 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
                     break;
                 case 5:
                     color = glm::vec3(1.0f, 0.5f, 0.0f);
-                    break;                
+                    break;
                 default:
                     color = glm::vec3(1.0f);
                     break;
                 }
                 glm::vec2 pos(unit_width * x, unit_height * y);
                 glm::vec2 size(unit_width, unit_height);
-                Bricks.push_back(GameObject(pos, size, ResourceManager::GetTexture2D("block"), color));
+                this->Bricks.push_back(GameObject(pos, size, ResourceManager::GetTexture2D("block"), color));
             }
         }
     }
 }
-

@@ -7,8 +7,8 @@
 #include <iostream>
 
 // GLFW function declarations
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode);
 
 // The Width AND Heigth of the screen
 const unsigned int SCREEN_WIDTH = 800;
@@ -17,7 +17,7 @@ const unsigned int SCREEN_HEIGHT = 600;
 // Creation of the Window
 Game Breakout(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-int main( int agrc, char*argv[])
+int main(int agrc, char *argv[])
 {
     glfwInit(); // create context container and set the configurations
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -28,11 +28,11 @@ int main( int agrc, char*argv[])
 #endif
     glfwWindowHint(GLFW_RESIZABLE, false);
 
-    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Breakout", nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Breakout", nullptr, nullptr);
     glfwMakeContextCurrent(window);
 
     // glad: load all OpenGL function pointers
-    if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
@@ -41,19 +41,19 @@ int main( int agrc, char*argv[])
     glfwSetKeyCallback(window, key_callback);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    //OpenGL configuration
+    // OpenGL configuration
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    //initialize game
+    // initialize game
     Breakout.Init();
 
-    //deltaTime variables ( because of the object in movement, we need to take care about the time)
+    // deltaTime variables ( because of the object in movement, we need to take care about the time)
     double deltaTime = 0.0f;
     double lastFrame = 0.0f;
 
-    while(!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(window))
     {
         // Calculate deltaTime
         double currentFrame = glfwGetTime();
@@ -84,22 +84,22 @@ int main( int agrc, char*argv[])
 
 // Function definitions
 // key_callback is a function an interrupt when one action with the keys take place. press, release etc... (less CPU intense)
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode)
 {
     // When a user presses the esacpe key, we set the WindowShouldClose property to true, closing the application
-    if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-    if(key >= 0 && key < 1024)
+    if (key >= 0 && key < 1024)
     {
-        if(action == GLFW_PRESS)
+        if (action == GLFW_PRESS)
             Breakout.Keys[key] = true;
-        else if(action == GLFW_RELEASE)
+        else if (action == GLFW_RELEASE)
             Breakout.Keys[key] = false;
     }
 }
 
 // callback that is called when the window size change. This implementation reegenerate the viewMatrix to project the renderings into the window size.
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
     glViewport(0, 0, width, height);
 }

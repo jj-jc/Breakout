@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "C/C++: g++.exe build active file",
+            "command": "C:\\mingw\\bin\\g++.exe",
+            "args": [
+                "-std=c++11",
+                "-O2",
+                "-Wall",
+                "-g",
+                "${file}",
+                "-o",
+                "C:\\Dev\\Breakout\\bin\\Breakout.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "isDefault": true,
+                "kind": "build"
+            }
+        }
+    ]
+}

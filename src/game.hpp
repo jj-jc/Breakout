@@ -30,24 +30,24 @@ typedef std::tuple<bool, Direction, glm::vec2> Collision;
 // Host class that will controls the game
 class Game
 {
-    public:
-        GameState State;
-        bool Keys[1024];
-        unsigned int Width, Height;
-        std::vector<GameLevel> Levels;
-        unsigned int Current_level;
-        
-        // Game functionalities
-        void DoCollisions();
-        void ResetLevel();
-        void ResetPaddle();
-        // Constructor/Destructor
-        Game(unsigned int width, unsigned int height);
-        ~Game();
-        // Flow functionalities 
-        void Init();// Initialize game state (load all resources: Shaders/textures/levels)
-        void ProcessInput(double dt); // Process input as stored within keys parameter
-        void Update(double dt); // Update all game events: player/ball movements
-        void Render(); // Render the game Frame
+public:
+    GameState State;
+    bool Keys[1024];
+    unsigned int Width, Height;
+    std::vector<GameLevel> Levels;
+    unsigned int Current_level;
+
+    // Game functionalities
+    void DoCollisions();
+    void ResetLevel();
+    void ResetPaddle();
+    // Constructor/Destructor
+    Game(unsigned int width, unsigned int height);
+    ~Game();
+    // Flow functionalities
+    void Init();                  // Initialize game state (load all resources: Shaders/textures/levels)
+    void ProcessInput(double dt); // Process input as stored within keys parameter
+    void Update(double dt);       // Update all game events: player/ball movements
+    void Render();                // Render the game Frame
 };
 #endif

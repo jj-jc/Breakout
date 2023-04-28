@@ -12,21 +12,22 @@
 
 class GameLevel
 {
-    public:
-        std::vector<GameObject> Bricks; // Bricks for every level
+public:
+    std::vector<GameObject> Bricks; // Bricks for every level
 
-        // Conestructor
-        GameLevel() {}
-        // Loads level from file
-        void Load(const char* file, unsigned int levelWidth, unsigned int levelHeight);
-        // Render level
-        void Draw(SpriteRenderer &renderer);
-        // Check if the level is completed (all non-solid bricks are destoyed)
-        bool IsCompleted();
-        void Reset();
-    private:
-        // Initialize level from bricks data. levelWidth and Leveheight are from the enterily world 
-        void init(std::vector<std::vector<unsigned int>> tileData, unsigned int levelWidth, unsigned int levelHeight);
+    // Conestructor
+    GameLevel() {}
+    // Loads level from file
+    void Load(const char *file, unsigned int levelWidth, unsigned int levelHeight);
+    // Render level
+    void Draw(SpriteRenderer &renderer);
+    // Check if the level is completed (all non-solid bricks are destoyed)
+    bool IsCompleted();
+    void Reset();
+
+private:
+    // Initialize level from bricks data. levelWidth and Leveheight are from the enterily world
+    void init(std::vector<std::vector<unsigned int>> tileData, unsigned int levelWidth, unsigned int levelHeight);
 };
 
 #endif /*GAME_LEVEL_H*/
