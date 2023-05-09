@@ -25,12 +25,32 @@ Texture2D &ResourceManager::LoadTexture2D(const char *file, bool alpha, std::str
 
 Shader &ResourceManager::GetShader(std::string name)
 {
-    return _shaders_map[name];
+    auto iter = _shaders_map.find(name);
+    if (iter != _shaders_map.end())
+    {
+        return iter->second;
+    }
+    else
+    {
+        std::cout << "ERROR: There is no Shader with the name '" << name << "' inside ResourceManager\n";
+        // TODO: Se debería añadir un shader null para estos problemas localizarlos más rápidamente
+        return _shaders_map.begin()->second;
+    }
 }
 
 Texture2D &ResourceManager::GetTexture2D(std::string name)
 {
-    return _textures2D_map[name];
+    auto iter = _textures2D_map.find(name);
+    if (iter != _textures2D_map.end())
+    {
+        return iter->second;
+    }
+    else
+    {
+        std::cout << "ERROR: There is no Texture2D with the name '" << name << "' inside ResourceManager\n";
+        // TODO: Se debería añadir una Textura null para estos problemas localizarlos más rápidamente
+        return _textures2D_map.begin()->second;
+    }
 }
 
 void ResourceManager::Clear()

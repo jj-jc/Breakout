@@ -16,7 +16,7 @@
                 // There I have got error Property keys must be doublequotedjsonc
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}\\bin",
+            "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",

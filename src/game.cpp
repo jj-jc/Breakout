@@ -2,19 +2,24 @@
 #include "resource_manager.hpp"
 #include "sprite_renderer.hpp"
 #include "ball_object.hpp"
+#include "particle_generator.hpp"
+#include <iostream>
 
 // Game-related State data
 SpriteRenderer *Renderer;
 
 // Paddle Object
-GameObject *Paddle;
+GameObject *Paddle = nullptr;
 const glm::vec2 PADDLE_SIZE(100.0f, 20.f);
 const float PADDLE_VELOCITY(500.0f);
 
 // Ball Object
-BallObject *Ball;
+BallObject *Ball = nullptr;
 const float BALL_RADIUS(12.5f);
 const glm::vec2 INITIAL_BALL_VELOCITY(100.0f, -350.f);
+
+// Particles
+ParticleGenerator *Particles = nullptr;
 
 // Function declarations
 bool checkCollision(GameObject &one, GameObject &two);
@@ -32,6 +37,7 @@ Game::~Game()
     delete Renderer; // TODO: call to the destructor to correctly free the data
     delete Paddle;
     delete Ball;
+    delete Particles;
 }
 
 // Functionalities
@@ -39,41 +45,48 @@ Game::~Game()
 void Game::Init()
 {
     // Load shaders
-    ResourceManager::LoadShader("src/sprite.vs", "src/sprite.fs", nullptr, "sprite");
+    ResourceManager::LoadShader("sprite.vs", "sprite.fs", nullptr, "sprite");
+    ResourceManager::LoadShader("particle.vs", "particle.fs", nullptr, "particle");
     // Configure shaders
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(this->Width),
                                       static_cast<float>(this->Height), 0.0f, -1.0f, 1.0f);
     // ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
-    ResourceManager::GetShader("sprite").Use().SetMatrix4("projection",
-                                                          projection);
+    ResourceManager::GetShader("sprite").Use().SetMatrix4("projection", projection);
+    ResourceManager::GetShader("particle").Use().SetMatrix4("projection", projection);
+    // ResourceManager::GetShader()
     // Set render-specific controls
     Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
     // Load textures
-    ResourceManager::LoadTexture2D("resources/textures/awesomeface.png", true, "face");
+    ResourceManager::LoadTexture2D("C:/Dev/Breakout/resources/textures/awesomeface.png", true, "face");
     ResourceManager::LoadTexture2D("C:/Dev/Breakout/resources/textures/background.jpg", false, "background"); // El jpg no tiene alpha y por tanto da error si se pone a true.
-    ResourceManager::LoadTexture2D("resources/textures/block.png", false, "block");
-    ResourceManager::LoadTexture2D("resources/textures/block_solid.png", false, "block_solid");
-    ResourceManager::LoadTexture2D("resources/textures/paddle.png", true, "paddle");
+    ResourceManager::LoadTexture2D("C:/Dev/Breakout/resources/textures/block.png", false, "block");
+    ResourceManager::LoadTexture2D("C:/Dev/Breakout/resources/textures/block_solid.png", false, "block_solid");
+    ResourceManager::LoadTexture2D("C:/Dev/Breakout/resources/textures/paddle.png", true, "paddle");
+    ResourceManager::LoadTexture2D("C:/Dev/Breakout/resources/textures/particle.png", true, "particle");
     // Load levels
     GameLevel one;
-    one.Load("resources/levels/one.lvl", Width, Height / 2);
+    one.Load("C:/Dev/Breakout/resources/levels/one.lvl", Width, Height / 2);
     Levels.push_back(one);
     GameLevel two;
-    two.Load("resource/levels/two.lvl", Width, Height / 2);
+    two.Load("C:/Dev/Breakout/resource/levels/two.lvl", Width, Height / 2);
     Levels.push_back(two);
     GameLevel three;
-    three.Load("resources/levels/three.lvl", Width, Height / 2);
+    three.Load("C:/Dev/Breakout/resources/levels/three.lvl", Width, Height / 2);
     Levels.push_back(three);
     GameLevel four;
-    four.Load("resources/levels/four.lvl", Width, Height / 2);
+    four.Load("C:/Dev/Breakout/resources/levels/four.lvl", Width, Height / 2);
     Levels.push_back(four);
-    Current_level = 0; // init the curren level to level 1
-    // Configure paddle Object
+    Current_level = 2; // init the curren level to level 1
+    // Creating paddle Object
     glm::vec2 paddlePos = glm::vec2(Width / 2.0f - PADDLE_SIZE.x / 2.0f, Height - PADDLE_SIZE.y);
     Paddle = new GameObject(paddlePos, PADDLE_SIZE, ResourceManager::GetTexture2D("paddle"));
     // Createing BallObject
     glm::vec2 ballPos = paddlePos + glm::vec2(PADDLE_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
     Ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetTexture2D("face"));
+    // Creating particles
+    Particles = new ParticleGenerator(ResourceManager::GetShader("particle"),
+                                      ResourceManager::GetTexture2D("particle"),
+                                      500);
 }
 
 // Process input as stored within Keys parameter
@@ -95,8 +108,8 @@ void Game::ProcessInput(double dt)
         }
         if (Keys[GLFW_KEY_SPACE])
             Ball->Stuck = false;
-        if (Keys[GLFW_KEY_R])
-            Ball->Reset();
+        // if (Keys[GLFW_KEY_R])
+        // Ball->Reset();
     }
 }
 
@@ -105,6 +118,7 @@ void Game::Update(double dt)
 {
     Ball->Move(dt, this->Width);
     this->DoCollisions();
+    Particles->Update(dt, *Ball, 3, glm::vec2(Ball->Radius / 2.0f));
 
     if (Ball->Position.y >= Height) // The ball reachs bottom edge
     {
@@ -118,13 +132,13 @@ void Game::Render()
 {
     if (State == GAME_ACTIVE)
     {
-        // Draw background
-        Renderer->DrawSprite(ResourceManager::GetTexture2D("background"), glm::vec2(0.0f, 0.0f), glm::vec2(Width, Height), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-        // Draw level
-        Levels[Current_level].Draw(*Renderer);
-        // Draw Paddle Object
+        Renderer->DrawSprite(ResourceManager::GetTexture2D("background"),
+                             glm::vec2(0.0f, 0.0f), glm::vec2(Width, Height),
+                             0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+        this->Levels[this->Current_level].Draw(*Renderer);
         Paddle->Draw(*Renderer);
-        // Draw Ball Object
+        // Mantein particles before ball but at the end of every object
+        Particles->Draw();
         Ball->Draw(*Renderer);
     }
 }
